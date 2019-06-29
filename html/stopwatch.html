@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stopwatch with RxJS</title>
+</head>
+<body>
+    <h1>Stopwatch with RxJs</h1>
+
+    <div class="wrapper">
+        <button id="start">Start</button>
+        <button id="stop">Stop</button>
+        <div id="clock">
+            <span id="minutes"></span>:<span id="seoncds"></span>:<span id="milliseconds"></span>
+        </div>
+        <button id="reset">Reset</button>
+    </div>
+
+    <script src="https://unpkg.com/rxjs@5.0.1/bundles/Rx.min.js"></script>
+    <script>
+        const startButton = document.querySelector("#start");
+        const stopButton = document.querySelector("#stop");
+        const resetButton = document.querySelector("#reset");
+
+        const startStream = Rx.Observable.fromEvent(startButton, 'click');
+        const stopStream = Rx.Observable.fromEvent(stopButton, 'click');
+        const resetStream = Rx.Observable.fromEvent(resetButton, 'click');
+
+        const intervalStream = Rx.Observable.interval(1000);
+
+        const pausibleStream = intervalStream.takeUntil(stopStream);
+
+        app$ = startStream.switchMapTo(pausibleStream)
+            .scan(acc => acc+1, 0)
+            .subscribe(v => console.log(v));
+    </script>
+</body>
+</html>

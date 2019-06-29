@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>First Bacon</title>
+
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bacon.js/0.7.89/Bacon.js"></script>
+
+</head>
+<body>
+    <h1>Bacon First</h1>
+    <div>
+        <button id="plus">+</button>
+        <button id="minus">-</button>
+    </div>
+    <div>
+        <p>Count: <span id="count">0</span></p>
+    </div>
+    <script>
+        // plusStream:  ----- +1 ------ +1 ----
+        var plusStream = $("#plus").asEventStream('click').map(1);
+
+        // minusStream: -- -1 ----- -1 ----- -1 ---
+        var minusStream = $("#minus").asEventStream('click').map(-1);
+
+        // var countStream = plusStream.merge(minusStream);
+        var countStream = plusStream.merge(minusStream).scan(0, function(previousValue, currentValue) {
+            return previousValue + currentValue;
+        });
+
+        countStream.assign($("#count"), 'text');
+    </script>
+</body>
+</html>

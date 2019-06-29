@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Functions</title>
+</head>
+<body>
+    <script>
+        const prop1 = 'val 1';
+        const prop2 = 'val 2';
+
+        const anObj = {
+            prop1,
+            prop2,
+            toString() { return `${prop1} - ${prop2}`; }
+        };
+
+        console.log(anObj.toString());
+
+        const sequence2 = (f1, f2) => (...args) =>
+        {
+            return f2(f1(...args));
+        }
+
+        const add1 = x => x + 1;
+        const mult2 = x => x * 2;
+
+        console.log(sequence2(add1, mult2)(3));
+        console.log(sequence2(mult2, add1)(3));
+
+        const msequence = (f1, ...fx) => (...args) =>
+        {
+            const [fn, ...ftail] = fx;
+
+            if(ftail.length > 0) {
+                return msequence(fn, ...ftail)(f1(...args));
+            } else {
+                return fn(f1(...args));
+            }
+        }
+
+        const sub3 = x => x - 3;
+        const val = 11;
+
+        console.log('recurse: ' + msequence(add1, sub3, mult2, mult2, add1)(val));
+
+        const msequence_reduce = (f1, ...ftail) =>
+        {
+            return ftail.reduce(sequence2, f1);
+        }
+
+        const msequence_reduce2 = (f1, ...ftail) =>
+        {
+            return ftail.reduce((fa, fb) => (...args) => fb(fa(...args)), f1);
+        }
+
+        console.log('reduce : ' + msequence_reduce(add1, sub3, mult2, mult2, add1)(val));
+        console.log('reduce2: ' + msequence_reduce2(add1, sub3, mult2, mult2, add1)(val));
+    </script>
+    
+</body>
+</html>

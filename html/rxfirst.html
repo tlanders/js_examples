@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RX JS first</title>
+</head>
+<body>
+    <h1>RX JS first</h1>
+
+    <!--<script src="https://unpkg.com/rxjs/bundles/Rx.min.js"></script>-->
+    <script src="https://unpkg.com/rxjs@5.0.1/bundles/Rx.min.js"></script>
+    <script>
+        const streamA = Rx.Observable.interval(300).take(6)
+        const streamB = Rx.Observable.interval(500).take(4);
+
+        // const streamOut = streamA.merge(streamB);
+
+        const streamOut = Rx.Observable.combineLatest(streamA, streamB, (a,b) => a+b);
+        // const streamA = Rx.Observable.of(1,2,3);
+
+        // streamA
+        //     .subscribe((x) => {console.log(x)});
+
+        streamOut
+            // .take(5)
+            // .filter((x) => x%2 !== 0)
+            // .map((val) => val ** 2)
+            .subscribe((x) => console.log(x));
+    </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Draggable</title>
+    <style>
+        #draggable {
+            color : white;
+            line-height: 70px;
+            text-align: center;
+            background-color: #28f;
+            height: 80px;
+            width: 80px;
+            position: absolute;
+            cursor: move;
+        }
+    </style>
+</head>
+<body>
+    <div id="draggable">Drag Me!</div>
+
+    <script src="https://unpkg.com/rxjs@5.0.1/bundles/Rx.min.js"></script>
+    <script>
+        const draggable = document.querySelector("#draggable");
+
+        const mousedown$ = Rx.Observable.fromEvent(draggable, 'mousedown');
+        const mousemove$ = Rx.Observable.fromEvent(draggable, 'mousemove');
+        const mouseup$ = Rx.Observable.fromEvent(draggable, 'mouseup');
+
+        // 1. detect mouse down
+        // 2. while down, listen for move and up
+        // 3. on up, stop listening for moves and up
+
+        const mouseDrag$ = mousedown$.flatMap( mdEvent => {
+            const startX = mdEvent.offsetX;
+            const startY = mdEvent.offsetY;
+
+            return mousemove$.map(mmEvent => {
+                return {
+                    left: mmEvent.clientX - startX,
+                    top: mmEvent.clientY - startY
+                }
+            }).takeUntil(mouseup$)
+        });
+
+        mouseDrag$.subscribe(pos => {
+            draggable.style.top = pos.top + 'px';
+            draggable.style.left = pos.left + 'px';
+            // console.log(pos)
+        });
+
+    </script>
+</body>
+</html>

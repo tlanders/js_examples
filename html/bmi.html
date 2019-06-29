@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BMI Calculator</title>
+</head>
+<body>
+    <div>
+        <label>Height (in cm): <span id="height-value">170</span></label>
+        <div>
+            <input type="range" id="height-input" min="120" max="240" value="170">
+        </div>
+    </div>
+    <div>
+        <label>Weight (in kg): <span id="weight-value">70</span></label>
+        <div>
+            <input type="range" id="weight-input" min="20" max="250" value="70">
+        </div>
+    </div>
+
+    <div>
+        <p>BMI: <span id="bmi"></span></p>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bacon.js/0.7.89/Bacon.js"></script>
+    <script>
+        // height: ----- a ----- b ------ c ----
+        const heightStream = Bacon.fromEvent(document.querySelector('#height-input'), 'input')
+            .map(e => parseInt(e.target.value))
+            .startWith(170);
+
+
+        // weight: ---x --- y ---- z ---
+        const weightStream = Bacon.fromEvent(document.querySelector('#weight-input'), 'input')
+            .map(e => parseInt(e.target.value))
+            .startWith(70);
+
+
+        // weight: ---(a,x) --- (a,y) - (b,y) --(c,y)-- (c,z) ---
+        const bmiStream = Bacon.combineWith(heightStream, weightStream, (h, w) => (w * 10000 / h ** 2).toFixed(2))
+            .onValue(v => document.querySelector("#bmi").innerHTML = v);
+
+        heightStream.onValue(v => document.querySelector("#height-value").innerHTML = v);
+        weightStream.onValue(v => document.querySelector("#weight-value").innerHTML = v);
+    </script>
+</body>
+</html>
