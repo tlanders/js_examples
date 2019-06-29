@@ -40,9 +40,25 @@
                 return newTree;
             }
         };
+
+        const treeReducer2 = (currentNode, currentValue) => {
+            if(currentNode === null) {
+                return { value: currentValue, left:null, right:null };
+            } else {
+                if(currentValue < currentNode.value) {
+                    currentNode.left = treeReducer2(currentNode.left, currentValue);
+                } else {
+                    currentNode.right = treeReducer2(currentNode.right, currentValue);
+                }
+                return currentNode;
+            }
+        };
+
         const theTree = nodeList.reduce(treeReducer, null);
+        const theTree2 = nodeList.reduce(treeReducer2, null);
 
         console.log(theTree);
+        console.log(theTree2);
     </script>
     
 </body>
