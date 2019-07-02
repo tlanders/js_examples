@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Template</title>
+</head>
+<body>
+    <script>
+        const courses = [
+            {title:'Deep Dive Into JS', author:'John Doe', sections:6},
+            {title:'Java for Dummies', author:'Susan B. Anthony', sections:4},
+            {title:'Apache Kafka for Fun', author:'Abe Lincoln', sections:3}
+        ];
+
+        const getTemplate = function( {courses} ) {
+            const headerTemplate = `
+            <tr>
+                <td>Title</td>
+                <td>Author</td>
+                <td>Sections</td>
+            </tr>`;
+
+            const rowTemplate = courses.map(course => `
+            <tr>
+                <td>${course.title}</td>
+                <td>${course.author}</td>
+                <td>${course.sections}</td>
+            </tr>`).join('');
+
+            return `
+            <table>
+                <thead>${headerTemplate}</thead>
+                <tbody>${rowTemplate}</tbody>
+            </table>`;
+        };
+
+        const insertTemplate = (domNode, getTemplate, templateData) => {
+            domNode.innerHTML = getTemplate(templateData);
+        };
+
+//        const renderTemplate = insertTemplate.bind(null, document.body, getTemplate);
+
+//        renderTemplate(courses);
+        insertTemplate(document.body, getTemplate, courses);
+        //document.body.innerHTML - tableTemplate;
+    </script>
+</body>
+</html>

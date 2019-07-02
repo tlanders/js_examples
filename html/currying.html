@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Currying</title>
+</head>
+<body>
+    <script>
+        const addTwo = (a, b) => a + b;
+
+        console.log('2 + 3 = ' + addTwo(2,3));
+
+        const addTwoCurried = a => b => a + b;
+
+        console.log('2 + 3 = ' + addTwoCurried(2)(3));
+
+        const multThree = (a,b,c) => a*b*c;
+        console.log(multThree(2,3,4));
+
+        const multThreeCurried = a => b => c => a * b * c;
+        console.log(multThreeCurried(2)(3)(4));
+
+        let getGradeTest = average => (testScore => testScore >= average ? 'A' : 'F');
+        console.log(getGradeTest(0.9)(.95));
+
+        function mapScoresToGrades(tests,average) {
+            let gradeTest = getGradeTest(average);
+            return tests.map(gradeTest);
+        }
+
+        console.log(mapScoresToGrades([.5, .7, .9], .8));
+
+        function addA(a) {
+            return function addB(b) {
+                return a + b;
+            }
+        }
+
+        console.log(addA(2)(3));
+
+        const partial = (f, ...args) =>
+            (...args2) =>
+            f(...args, ...args2);
+
+        const volume = (a, b, c) => a*b*c;
+
+        const partialVolume2_3 = partial(volume, 2, 3);
+
+        console.log("vol=" + partialVolume2_3(4));
+
+        const addCurried =
+            a =>
+                b =>
+                    addTwo(a,b);
+
+        console.log(addCurried(3)(4));
+
+        const multCurried =
+            a =>
+                b =>
+                    c =>
+                        multThree(a,b,c);
+
+        console.log(multThreeCurried(4)(5)(4));
+    </script>
+    
+</body>
+</html>
