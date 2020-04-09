@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Caeser Ciper</title>
+    <p>From CodeWars - <a target="_blank" href="https://www.codewars.com/kata/5508249a98b3234f420000fb/javascript">https://www.codewars.com/kata/5508249a98b3234f420000fb/javascript</a></p>
+    <script>
+        const lowerCaseAVal = 'a'.charCodeAt(0);
+        const upperCaseAVal = 'A'.charCodeAt(0);
+        const LETTERS_IN_ALPHABET = 'z'.charCodeAt(0) - lowerCaseAVal + 1;
+
+        function movingShift(str, shift) {
+            console.log('movingShift: str=' + str + ', shift=' + shift);
+            console.log('s1=' + str.charAt(1));
+            let result = "";
+            for(let index = 0; index < str.length; index++) {
+                result += String.fromCharCode(str.charCodeAt(index) + index + shift);
+            }
+
+            console.log('movingShift, str=' + str + ', result=[' + result + ']');
+            return result;
+        }
+        function demovingShift(strArray, shift) {
+            console.log('demovingShift: strArray=[' + strArray + '], shift=' + shift);
+        }
+
+        movingShift('Hello zephyr!', 2);
+        demovingShift(['bye1', 'bye2', 'bye3', 'bye4', 'bye5'], 3);
+    </script>
+</head>
+<body>
+
+</body>
+</html>
