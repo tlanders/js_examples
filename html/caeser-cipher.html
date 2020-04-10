@@ -4,26 +4,57 @@
     <meta charset="UTF-8">
     <title>Caeser Ciper</title>
     <script>
-        const lowerCaseAVal = 'a'.charCodeAt(0);
-        const upperCaseAVal = 'A'.charCodeAt(0);
-        const LETTERS_IN_ALPHABET = 'z'.charCodeAt(0) - lowerCaseAVal + 1;
+        const LOWER_CASE_A_VAL = 'a'.charCodeAt(0);
+        const UPPER_CASE_A_VAL = 'A'.charCodeAt(0);
+        const LOWER_CASE_LETTERS = "abcdefghijklmnopqrstuvwxyz";
+        const UPPER_CASE_LETTERS = LOWER_CASE_LETTERS.toUpperCase();
+        const LETTERS_IN_ALPHABET = 'z'.charCodeAt(0) - LOWER_CASE_A_VAL + 1;
+        const NUM_RESULT_ARRAYS = 5;
 
         function movingShift(str, shift) {
-            console.log('movingShift: str=' + str + ', shift=' + shift);
-            console.log('s1=' + str.charAt(1));
+            // console.log('movingShift: str=[' + str + '], shift=' + shift);
             let result = "";
             for(let index = 0; index < str.length; index++) {
-                result += String.fromCharCode(str.charCodeAt(index) + index + shift);
+                const theChar = str.charAt(index);
+                // console.log('theChar=' + theChar);
+                if(/[a-z]/.test(theChar)) {
+                    // console.log('  theChar=' + theChar + ", encoding lower");
+                    result += LOWER_CASE_LETTERS[((theChar.charCodeAt(0) + index + shift) - LOWER_CASE_A_VAL) % LETTERS_IN_ALPHABET];
+                    // result += String.fromCharCode((str.charCodeAt(index) + index + shift) % LETTERS_IN_ALPHABET + lowerCaseAVal);
+                } else if(/[A-Z]/.test(theChar)) {
+                    // console.log('  theChar=' + theChar + ", encoding upper");
+                    result += UPPER_CASE_LETTERS[((theChar.charCodeAt(0) + index + shift) - UPPER_CASE_A_VAL) % LETTERS_IN_ALPHABET];
+                } else {
+                    // whitespace or non-char so copy it directly to the output
+                    // console.log('  theChar=' + theChar + ", copying");
+                    result += theChar;
+                }
             }
 
-            console.log('movingShift, str=' + str + ', result=[' + result + ']');
-            return result;
+            // console.log('movingShift, str=' + str + ', result=[' + result + ']');
+            const resultArraySize = Math.ceil(str.length / NUM_RESULT_ARRAYS);
+            let resultArray = [];
+
+            for(let resIndex = 0; resIndex < NUM_RESULT_ARRAYS; resIndex++) {
+                const startIndex = resultArraySize * resIndex;
+                // console.log('startIndex=' + startIndex + ", end=" + (startIndex + resultArraySize)
+                //     + ", pushing=[" + result.substring(startIndex, startIndex + resultArraySize) + ']');
+                resultArray.push(result.substring(startIndex, startIndex + resultArraySize));
+            }
+            console.log('movingShift, str=' + str + ', result=[' + result + ']' + ", resultArray=" + resultArray);
+            return resultArray;
         }
         function demovingShift(strArray, shift) {
             console.log('demovingShift: strArray=[' + strArray + '], shift=' + shift);
         }
 
+        movingShift('abcd', 1);
+        movingShift('zzz? zzz!', 3);
+        movingShift('ZZZ? ABC!', 1);
         movingShift('Hello zephyr!', 2);
+        movingShift('I should have known that', 1);
+        movingShift('I should have known that you would have a perfect answer for me!!!', 1);
+
         demovingShift(['bye1', 'bye2', 'bye3', 'bye4', 'bye5'], 3);
     </script>
 </head>
