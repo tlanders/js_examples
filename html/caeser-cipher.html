@@ -11,51 +11,84 @@
         const LETTERS_IN_ALPHABET = 'z'.charCodeAt(0) - LOWER_CASE_A_VAL + 1;
         const NUM_RESULT_ARRAYS = 5;
 
+        function getEncodingShift(theChar, index, shift) {
+            const baseCharCode = isLowerCase(theChar) ? LOWER_CASE_A_VAL : UPPER_CASE_A_VAL;
+            let ltrIndex = ((theChar.charCodeAt(0) + index + shift) - baseCharCode) % LETTERS_IN_ALPHABET;
+            if (ltrIndex < 0) ltrIndex += LETTERS_IN_ALPHABET;
+            return ltrIndex;
+        }
+
         function movingShift(str, shift) {
             // console.log('movingShift: str=[' + str + '], shift=' + shift);
             let result = "";
             for(let index = 0; index < str.length; index++) {
                 const theChar = str.charAt(index);
-                // console.log('theChar=' + theChar);
-                if(/[a-z]/.test(theChar)) {
-                    // console.log('  theChar=' + theChar + ", encoding lower");
-                    result += LOWER_CASE_LETTERS[((theChar.charCodeAt(0) + index + shift) - LOWER_CASE_A_VAL) % LETTERS_IN_ALPHABET];
-                    // result += String.fromCharCode((str.charCodeAt(index) + index + shift) % LETTERS_IN_ALPHABET + lowerCaseAVal);
-                } else if(/[A-Z]/.test(theChar)) {
-                    // console.log('  theChar=' + theChar + ", encoding upper");
-                    result += UPPER_CASE_LETTERS[((theChar.charCodeAt(0) + index + shift) - UPPER_CASE_A_VAL) % LETTERS_IN_ALPHABET];
+                if(isLowerCase(theChar)) {
+                    result += LOWER_CASE_LETTERS[getEncodingShift(theChar, index, shift)];
+                } else if(isUpperCase(theChar)) {
+                    result += UPPER_CASE_LETTERS[getEncodingShift(theChar, index, shift)];
                 } else {
                     // whitespace or non-char so copy it directly to the output
-                    // console.log('  theChar=' + theChar + ", copying");
                     result += theChar;
                 }
             }
 
-            // console.log('movingShift, str=' + str + ', result=[' + result + ']');
             const resultArraySize = Math.ceil(str.length / NUM_RESULT_ARRAYS);
             let resultArray = [];
 
             for(let resIndex = 0; resIndex < NUM_RESULT_ARRAYS; resIndex++) {
                 const startIndex = resultArraySize * resIndex;
-                // console.log('startIndex=' + startIndex + ", end=" + (startIndex + resultArraySize)
-                //     + ", pushing=[" + result.substring(startIndex, startIndex + resultArraySize) + ']');
                 resultArray.push(result.substring(startIndex, startIndex + resultArraySize));
             }
             console.log('movingShift, str=' + str + ', result=[' + result + ']' + ", resultArray=" + resultArray);
             return resultArray;
         }
-        function demovingShift(strArray, shift) {
-            console.log('demovingShift: strArray=[' + strArray + '], shift=' + shift);
+
+        function getDecodingShift(theChar, shift, index) {
+            const baseCharCode = isLowerCase(theChar) ? LOWER_CASE_A_VAL : UPPER_CASE_A_VAL;
+            let ltrIndex = ((theChar.charCodeAt(0) - shift - index - baseCharCode) % LETTERS_IN_ALPHABET);
+            if (ltrIndex < 0) ltrIndex += LETTERS_IN_ALPHABET;
+            return ltrIndex;
         }
 
-        movingShift('abcd', 1);
-        movingShift('zzz? zzz!', 3);
-        movingShift('ZZZ? ABC!', 1);
-        movingShift('Hello zephyr!', 2);
-        movingShift('I should have known that', 1);
+        function isLowerCase(theChar) {
+            return /[a-z]/.test(theChar);
+        }
+
+        function isUpperCase(theChar) {
+            return /[A-Z]/.test(theChar);
+        }
+
+        function demovingShift(strArray, shift) {
+            const encodedStr = strArray.join('');
+            console.log('demovingShift: strArray=[' + strArray + '], shift=' + shift + ', encoded=[' + encodedStr + ']');
+            let decodedStr = "";
+
+            for(let index = 0; index < encodedStr.length; index++) {
+                const theChar = encodedStr.charAt(index);
+                if(isLowerCase(theChar)) {
+                    decodedStr += LOWER_CASE_LETTERS[getDecodingShift(theChar, shift, index)];
+                } else if(isUpperCase(theChar)) {
+                    decodedStr += UPPER_CASE_LETTERS[getDecodingShift(theChar, shift, index)];
+                } else {
+                    decodedStr += theChar;
+                }
+            }
+
+            console.log("decodedStr=[" + decodedStr + "]");
+            return decodedStr
+        }
+
         movingShift('I should have known that you would have a perfect answer for me!!!', 1);
 
-        demovingShift(['bye1', 'bye2', 'bye3', 'bye4', 'bye5'], 3);
+        demovingShift(movingShift('abcd', 0), 0);
+        demovingShift(movingShift('abcd', 1), 1);
+        demovingShift(movingShift('ABCD', 1), 1);
+        demovingShift(movingShift('I should have known that you would have a perfect answer for me!!!', 1), 1);
+        demovingShift(movingShift('I should have known that you would have a perfect answer for me!!!', -3), -3);
+        demovingShift(movingShift('abcd', -2), -2);
+        demovingShift(movingShift('', 1), 1);
+        demovingShift(movingShift('      ', 1), 1);
     </script>
 </head>
 <body>
