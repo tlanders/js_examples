@@ -21,8 +21,13 @@
             }
             return false;
         }
+        function directionReducer(accum, currVal) {
+            console.log('currVal=' + currVal + ', accum=' + accum);
+            accum.push(currVal);
+            return accum;
+        }
         function dirReduc(dirs) {
-            return dirs;
+            return dirs.reduce(directionReducer, []);
         }
         testDirReduc([], []);
         testDirReduc(['NORTH'], ['NORTH']);
