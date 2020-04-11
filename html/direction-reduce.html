@@ -21,9 +21,22 @@
             }
             return false;
         }
-        function directionReducer(accum, currVal) {
-            console.log('currVal=' + currVal + ', accum=' + accum);
-            accum.push(currVal);
+        function directionReducer(accum, thisDir) {
+            // console.log('thisDir=' + thisDir + ', accum=' + accum);
+            const prevDir = accum.pop();
+            if(prevDir) {
+                if(prevDir === 'NORTH' && thisDir === 'SOUTH'
+                        || (prevDir === 'SOUTH' && thisDir === 'NORTH')
+                        || (prevDir === 'WEST' && thisDir === 'EAST')
+                        || (prevDir === 'EAST' && thisDir === 'WEST')) {
+                    // drop both dirs
+                } else {
+                    accum.push(prevDir);
+                    accum.push(thisDir);
+                }
+            } else {
+                accum.push(thisDir);
+            }
             return accum;
         }
         function dirReduc(dirs) {
@@ -32,7 +45,13 @@
         testDirReduc([], []);
         testDirReduc(['NORTH'], ['NORTH']);
         testDirReduc(['NORTH', 'WEST'], ['NORTH', 'WEST']);
-        // testDirReduc(['NORTH', 'SOUTH'], []);
+        testDirReduc(['NORTH', 'SOUTH'], []);
+        testDirReduc(['SOUTH', 'NORTH'], []);
+        testDirReduc(['EAST', 'WEST'], []);
+        testDirReduc(['WEST', 'EAST'], []);
+        testDirReduc(['WEST', 'EAST', 'WEST', 'EAST'], []);
+        testDirReduc(['WEST', 'EAST', 'SOUTH', 'NORTH'], []);
+        testDirReduc(['WEST', 'EAST', 'EAST', 'WEST'], []);
     </script>
 </head>
 <body>
