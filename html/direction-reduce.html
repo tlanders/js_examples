@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Directions Reduction</title>
+    <script>
+        function testDirReduc(dirsIn, dirsExpected) {
+            const result = dirReduc(dirsIn);
+            if(isEqualTo(result, dirsExpected)) {
+                console.log('PASSED: in=[' + dirsIn + '], reduced=[' + result + ']');
+            } else {
+                console.log('FAILED: in=[' + dirsIn + '], reduced=[' + result + '], expected=[' + dirsExpected + ']');
+            }
+        }
+        function isEqualTo(arr1, arr2) {
+            if(arr1.length === arr2.length) {
+                for(let i = 0; i < arr1.length; i++) {
+                    if(arr1[i] !== arr2[i]) return false;
+                }
+                return true;
+            }
+            return false;
+        }
+        function dirReduc(dirs) {
+            return dirs;
+        }
+        testDirReduc([], []);
+        testDirReduc(['NORTH'], ['NORTH']);
+        testDirReduc(['NORTH', 'WEST'], ['NORTH', 'WEST']);
+        // testDirReduc(['NORTH', 'SOUTH'], []);
+    </script>
+</head>
+<body>
+    <h1>Directions Reduction Kata</h1>
+    <p>From CodeWars - <a target="_blank" href="https://www.codewars.com/kata/550f22f4d758534c1100025a">https://www.codewars.com/kata/550f22f4d758534c1100025a</a></p>
+</body>
+</html>
