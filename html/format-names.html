@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Format Names</title>
+    <script>
+        function getSeparator(index, len) {
+            if(index < len - 2) {
+                return ", ";
+            } else if(index == len - 2) {
+                return " & ";
+            } else {
+                return "";
+            }
+        }
+        function list(names){
+            let res = "";
+            for(let i = 0; i < names.length; i++) {
+                res += (names[i].name + getSeparator(i, names.length));
+            }
+            console.log(res);
+            return res;
+        }
+        function list2(names){
+            return names.map(n => n.name).join(', ').replace(/(.*),(.*)/, "$1 &$2");
+        }
+
+        console.log(list2([ {name: 'Bart'}, {name: 'Lisa'}, {name: 'Maggie'} ]));
+        console.log(list2([ {name: 'Bart'}, {name: 'Lisa'}]));
+        console.log(list2([ {name: 'Bart'}]));
+        console.log(list2([]));
+
+        list([ {name: 'Bart'}, {name: 'Lisa'}, {name: 'Maggie'} ]);
+        list([ {name: 'Bart'}, {name: 'Lisa'}]);
+        list([ {name: 'Bart'}]);
+        list([]);
+    </script>
+</head>
+<body>
+    <h1>Format Names Kata</h1>
+    <p>From CodeWars - <a target="_blank" href="https://www.codewars.com/kata/53368a47e38700bd8300030d/javascript">https://www.codewars.com/kata/53368a47e38700bd8300030d/javascript</a></p>
+</body>
+</html>
