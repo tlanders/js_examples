@@ -22,13 +22,23 @@
             return false;
         }
         var uniqueInOrder=function(iterable){
-            return iterable.reduce((accum, nextItem) => {
-                return accum;
-            },
-            []);
+            // console.log('uniqueOrder, iterable=' + iterable);
+            let unique = []
+            for(let item of iterable) {
+                // console.log('  item=' + item);
+                if(unique && unique[unique.length - 1] !== item) { unique.push(item); }
+            }
+            return unique;
         }
 
         test([], []);
+        test(["a"], ["a"]);
+        test([1], [1]);
+        test([1, 2], [1, 2]);
+        test(["a", "b"], ["a", "b"]);
+        test("ab", ["a", "b"]);
+        test("aa", ["a"]);
+        test('AAAABBBCCDAABBB', ['A','B','C','D','A','B']);
     </script>
 </head>
 <body>
