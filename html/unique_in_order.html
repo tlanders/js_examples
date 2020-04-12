@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Unique in Order</title>
+    <script>
+        function test(iterableIn, expected) {
+            const result = uniqueInOrder(iterableIn);
+            if(isEqualTo(result, expected)) {
+                console.log('PASSED: in=[' + iterableIn + '], unique=[' + result + ']');
+            } else {
+                console.log('FAILED: in=[' + iterableIn + '], unique=[' + result + '], expected=[' + expected + ']');
+            }
+        }
+        function isEqualTo(arr1, arr2) {
+            if(arr1.length === arr2.length) {
+                for(let i = 0; i < arr1.length; i++) {
+                    if(arr1[i] !== arr2[i]) return false;
+                }
+                return true;
+            }
+            return false;
+        }
+        var uniqueInOrder=function(iterable){
+            return iterable.reduce((accum, nextItem) => {
+                return accum;
+            },
+            []);
+        }
+
+        test([], []);
+    </script>
+</head>
+<body>
+    <h1>Unique in Order Kata</h1>
+    <p>From CodeWars - <a target="_blank" href="https://www.codewars.com/kata/54e6533c92449cc251001667/train/javascript">https://www.codewars.com/kata/54e6533c92449cc251001667/train/javascript</a></p>
+</body>
+</html>
