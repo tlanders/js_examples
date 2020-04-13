@@ -5,7 +5,7 @@
     <title>Unique in Order</title>
     <script>
         function test(iterableIn, expected) {
-            const result = uniqueInOrder(iterableIn);
+            const result = uniqueInOrder2(iterableIn);
             if(isEqualTo(result, expected)) {
                 console.log('PASSED: in=[' + iterableIn + '], unique=[' + result + ']');
             } else {
@@ -29,6 +29,13 @@
                 if(unique && unique[unique.length - 1] !== item) { unique.push(item); }
             }
             return unique;
+        }
+        var uniqueInOrder2=function(iterable){
+            // console.log('uniqueOrder, iterable=' + iterable);
+            return [...iterable].reduce((uniqueArray, nextItem) => {
+                if(uniqueArray && uniqueArray[uniqueArray.length - 1] !== nextItem) { uniqueArray.push(nextItem); }
+                return uniqueArray;
+            }, []);
         }
 
         test([], []);
