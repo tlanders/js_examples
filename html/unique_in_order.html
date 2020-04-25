@@ -46,6 +46,49 @@
         test("ab", ["a", "b"]);
         test("aa", ["a"]);
         test('AAAABBBCCDAABBB', ['A','B','C','D','A','B']);
+
+        function sum(val) {
+            return function(val2) {
+                return val + val2;
+            }
+        }
+
+        const sum2 = (val) => (val2) => val + val2;
+
+        console.log('sum(2)(3)=' + sum(2)(3));
+        console.log('sum2(2)(3)=' + sum2(2)(3));
+
+        let arr = [1,2,3,4,5,6]
+        function inBetween(min, max) {
+            return function(val) {
+                return val > min && val < max;
+            }
+        }
+
+        function inArray(testArray) {
+            return function(val) {
+                return testArray.indexOf(val) >= 0;
+            }
+        }
+        console.log(arr.filter(inBetween(3,6)));
+        console.log(arr.filter(inBetween(1,5)));
+        console.log(arr.filter(inArray([1,5])));
+        console.log(arr.filter(inArray([2,15, 3])));
+
+        let users = [
+            { name: "John", age: 20, surname: "Johnson" },
+            { name: "Pete", age: 18, surname: "Peterson" },
+            { name: "Ann", age: 19, surname: "Hathaway" }
+        ];
+
+        function byField(fieldName) {
+            return function(objA, objB) {
+                return objA[fieldName] > objB[fieldName] ? 1 : -1;
+            }
+        }
+
+        console.log(users.sort(byField('name')));
+        console.log(users.sort(byField('age')));
     </script>
 </head>
 <body>
