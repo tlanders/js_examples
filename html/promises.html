@@ -5,14 +5,40 @@
     <title>Promises Examples</title>
     <script>
         // basic promise example
-        new Promise(((resolve) => setTimeout(() => resolve('promise resolved'), 3000)))
+        new Promise((resolve) => setTimeout(() => resolve('promise resolved'), 3000))
             .then(result => document.getElementById("results").innerHTML += ("<p>promise1 success: " + result + "</p>"))
             .finally(() => document.getElementById("results").innerHTML += ("<p>promise1: finally executed</p>"));
 
         // promise that fails
-        new Promise(((resolve, reject) => setTimeout(() => reject(new Error("promise2 failed")), 4000)))
+        new Promise((resolve, reject) => setTimeout(() => reject(new Error("promise2 failed")), 4000))
             .then(result => document.getElementById("results").innerHTML += ("<p>promise2 success: " + result + "</p>"))
             .catch(error => document.getElementById("results").innerHTML += ("<p>promise2 error: " + error.message + "</p>"));
+
+        // simple promise chaining
+        // returning simple result causes API to wrap it in a Promise
+        new Promise((resolve) => {
+            let val = 1;
+            setTimeout(() => resolve(val), 1000);
+        }).then(result => {
+            document.getElementById("results").innerHTML += ("<p>promise3 chain result: " + result + "</p>")
+            return result *= 2;
+        }).then(result => {
+            document.getElementById("results").innerHTML += ("<p>promise3 chain result: " + result + "</p>")
+            return result *= 2;
+        }).then(result => document.getElementById("results").innerHTML += ("<p>promise3 chain result: " + result + "</p>"));
+
+        // promise chaining with multiple delays
+        // returning Promise causes API to use that Promise instead of creating a new one
+        new Promise((resolve) => {
+            let val = 1;
+            setTimeout(() => resolve(val), 2000);
+        }).then(result => {
+            document.getElementById("results").innerHTML += ("<p>promise4 chain result: " + result + "</p>")
+            return new Promise(resolve => setTimeout(() => resolve(result *= 2), 2000));
+        }).then(result => {
+            document.getElementById("results").innerHTML += ("<p>promise4 chain result: " + result + "</p>")
+            return new Promise(resolve => setTimeout(() => resolve(result *= 2), 2000));
+        }).then(result => document.getElementById("results").innerHTML += ("<p>promise4 chain result: " + result + "</p>"));
     </script>
 </head>
 <body>
