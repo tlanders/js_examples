@@ -5,16 +5,14 @@
     <title>Promises Examples</title>
     <script>
         // basic promise example
-        new Promise(((resolve) => {
-            setTimeout(() => resolve('promise resolved'), 3000);
-        })).then(result => document.getElementById("results").innerHTML += ("<p>promise success: " + result + "</p>"));
+        new Promise(((resolve) => setTimeout(() => resolve('promise resolved'), 3000)))
+            .then(result => document.getElementById("results").innerHTML += ("<p>promise1 success: " + result + "</p>"))
+            .finally(() => document.getElementById("results").innerHTML += ("<p>promise1: finally executed</p>"));
 
         // promise that fails
-        new Promise(((resolve, reject) => {
-            setTimeout(() => reject(new Error("promise failed")), 4000);
-        })).then(result => document.getElementById("results").innerHTML += ("<p>promise success: " + result + "</p>"))
-            .catch(error => document.getElementById("results").innerHTML += ("<p>promise error: " + error.message + "</p>"))
-
+        new Promise(((resolve, reject) => setTimeout(() => reject(new Error("promise2 failed")), 4000)))
+            .then(result => document.getElementById("results").innerHTML += ("<p>promise2 success: " + result + "</p>"))
+            .catch(error => document.getElementById("results").innerHTML += ("<p>promise2 error: " + error.message + "</p>"));
     </script>
 </head>
 <body>
