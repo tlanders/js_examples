@@ -39,6 +39,34 @@
             document.getElementById("results").innerHTML += ("<p>promise4 chain result: " + result + "</p>")
             return new Promise(resolve => setTimeout(() => resolve(result *= 2), 2000));
         }).then(result => document.getElementById("results").innerHTML += ("<p>promise4 chain result: " + result + "</p>"));
+
+        function loadScript(src) {
+            return new Promise(((resolve, reject) => {
+                let script = document.createElement('script');
+                script.src = src;
+                src.onload = () => resolve(script);
+                src.onerror = () => reject(new Error(`Script load error for ${src}`));
+
+                document.head.append(script);
+            }));
+        }
+
+        // using promises to load js sequentially
+        // TODO - scripts are loaded, but final then is never executed. why???
+        loadScript('../js/one.js')
+            .then(loadScript('../js/two.js'))
+            .then(loadScript('../js/three.js'))
+            .then(result => {
+                three();
+                two();
+                one();
+                console.log('zero!');
+            }, err => alert('error'));
+
+        fetch('../json/user.json')
+            .then(response => response.json())
+            .then(user => user.name)
+            .then(name => console.log(`name: ${name}`));
     </script>
 </head>
 <body>
