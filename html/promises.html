@@ -63,14 +63,24 @@
                 console.log('zero!');
             }, err => alert('error'));
 
+        // use promises with fetch of json doc. also hide result using promise after a delay
         fetch('../json/user.json')
             .then(response => response.json())
             .then(user => user.name)
-            .then(name => console.log(`name: ${name}`));
+            .then(name => new Promise(resolve => {
+                document.getElementById("results2").innerHTML += ("<p>fetch chain user: " + name + "</p>");
+                console.log(`name: ${name}`);
+                setTimeout(() => resolve(name), 5000);
+            }))
+            .then(name => {
+                console.log(`name resolved: ${name}`);
+                document.getElementById("results2").innerHTML = "";
+            });
     </script>
 </head>
 <body>
     <h1>Some Promises Examples</h1>
     <div id="results"/>
+    <div id="results2"/>
 </body>
 </html>
