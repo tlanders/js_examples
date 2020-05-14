@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Generator Examples</title>
+</head>
+<body>
+    <h1>Some Generator Examples</h1>
+    <div id="results"/>
+
+    <script>
+        function* pseudoRandom(seed) {
+            while(true) {
+                yield seed = seed * 16807 % 2147483647;
+            }
+        }
+
+        document.getElementById("results").innerHTML += `<p>Generating some psuedo-random values...</p>`;
+        let count = 1;
+        for(let x of pseudoRandom(1)) {
+            document.getElementById("results").innerHTML += `<p>${x}</p>`;
+            if(count++ >= 5) {
+                document.getElementById("results").innerHTML += `<p>Done generating values.</p>`;
+                break;
+            }
+        }
+    </script>
+</body>
+</html>
