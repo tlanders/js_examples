@@ -63,7 +63,7 @@
                 console.log('zero!');
             }, err => alert('error'));
 
-        // use promises with fetch of json doc. also hide result using promise after a delay
+        // use promises with fetch of json doc. also hide result using promise after a delay.
         fetch('../json/user.json')
             .then(response => response.json())
             .then(user => user.name)
@@ -76,6 +76,25 @@
                 console.log(`name resolved: ${name}`);
                 document.getElementById("results2").innerHTML = "";
             });
+
+        // use async/await to fetch json doc. also hide result using promise after a delay.
+        async function asyncFetch() {
+            let response = await fetch('../json/user2.json');
+            let user = await response.json();
+            let name = user.name;
+
+
+            let pName = await new Promise(resolve => {
+                    document.getElementById("results2").innerHTML += ("<p>async/await user: " + name + "</p>");
+                    console.log(`async/await name: ${name}`);
+                    setTimeout(() => resolve(name), 5000);
+            });
+
+            console.log(`async/await name resolved: ${pName}`);
+            document.getElementById("results2").innerHTML = "";
+        }
+
+        asyncFetch();
     </script>
 </head>
 <body>
